@@ -1,0 +1,28 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Data and Logs (AXIOM specific)
+data/
+axiom/logs/
+*.csv
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+
+# Ray/RLlib specific
+ray_results/
+
+# IDEs
+.vscode/
+.idea/
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
