@@ -45,6 +45,8 @@ class AxiomGymEnv(gym.Env):
         # 1. Translate RL action to Market order
         # For Phase 2, we control ONE agent (the first one)
         agent = self.model.schedule.agents[0]
+        old_utility = agent.get_utility()
+
         direction, quantity_idx = action
         quantity = quantity_idx + 1 # 0-4 becomes 1-5
         
@@ -62,8 +64,8 @@ class AxiomGymEnv(gym.Env):
         # 3. Get new observation and reward
         new_obs = self._get_obs(agent)
         
-        # Reward is change in wealth
-        reward = agent.wealth - 100.0 # Simple wealth-based reward for now
+        # Reward is change in utility
+        reward = float(agent.get_utility() - old_utility)
         
         terminated = self.model.schedule.steps >= 500 # Episode limit
         truncated = False

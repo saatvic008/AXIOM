@@ -6,12 +6,32 @@ class AxiomAgent(Agent):
     Base agent class for AXIOM. 
     Provides the interface for observation, action, and reward reception.
     """
-    def __init__(self, unique_id, model):
+    def __init__(self, unique_id, model, risk_type="RiskNeutral"):
         super().__init__(unique_id, model)
         self.wealth = 100.0  # Initial starting wealth
         self.inventory = 0   # Units of the asset held
         self.last_reward = 0.0
         self.type = "Base"
+        self.risk_type = risk_type
+        
+        # CRRA Gamma parameter for risk awareness
+        if self.risk_type == "RiskAverse":
+            self.gamma = 2.0
+        elif self.risk_type == "RiskSeeking":
+            self.gamma = -1.0
+        else: # RiskNeutral
+            self.gamma = 0.0
+
+    def get_utility(self):
+        """
+        Calculates the Constant Relative Risk Aversion (CRRA) utility.
+        Used by RL agents to evaluate states based on their risk profile.
+        """
+        w = max(self.wealth, 0.01) # Avoid log(0) or division by zero
+        if self.gamma == 1.0:
+            return np.log(w)
+        else:
+            return (w ** (1 - self.gamma)) / (1 - self.gamma)
 
     def observe(self):
         """
