@@ -26,20 +26,20 @@ Most trading systems are reactive. AXIOM agents are **reasoning, negotiating, an
 
 ## 📈 Roadmap
 - [x] **Phase 1: Simulation Foundation** — LOB, Double Auction, Walrasian clearing.
-- [ ] **Phase 2: RL Intelligence Layer** — Integration with Ray RLlib & Multi-Agent training.
+- [x] **Phase 2: RL Intelligence Layer** — Integration with Ray RLlib & Multi-Agent training.
 - [ ] **Phase 3: Emergent Complexity** — Coalition formation & Game Theoretic signaling.
 - [ ] **Phase 4: Research-Grade Polish** — D3.js visualizations & statistical reporting.
 
 ---
 
-## 🚦 Getting Started (Phase 1)
+## 🚦 Getting Started (Phases 1 & 2)
 
 ### 1. Install Dependencies
 ```bash
-pip install mesa ray[rllib] torch networkx fastapi uvicorn dash pandas numpy plotly
+pip install "mesa<3.0" ray[rllib] torch networkx fastapi uvicorn dash pandas numpy plotly
 ```
 
-### 2. Run the Simulation
+### 2. Run the Rule-Based Simulation (Phase 1)
 ```bash
 python run_sim.py
 ```
@@ -49,6 +49,12 @@ python run_sim.py
 python axiom/dashboard/app.py
 ```
 View the live market at `http://127.0.0.1:8050`.
+
+### 4. Train the RL Agents (Phase 2)
+```bash
+$env:PYTHONPATH="." 
+python axiom/rl/train.py
+```
 
 ---
 
