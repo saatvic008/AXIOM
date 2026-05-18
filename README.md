@@ -27,7 +27,7 @@ Most trading systems are reactive. AXIOM agents are **reasoning, negotiating, an
 ## 📈 Roadmap
 - [x] **Phase 1: Simulation Foundation** — LOB, Double Auction, Walrasian clearing.
 - [x] **Phase 2: RL Intelligence Layer** — Integration with Ray RLlib & Multi-Agent training.
-- [ ] **Phase 3: Emergent Complexity** — Coalition formation & Game Theoretic signaling.
+- [x] **Phase 3: Emergent Complexity** — Coalition formation & Game Theoretic signaling.
 - [ ] **Phase 4: Research-Grade Polish** — D3.js visualizations & statistical reporting.
 
 ---

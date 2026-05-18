@@ -1,6 +1,6 @@
 from mesa import Model
 from mesa.time import RandomActivation
-from .agent import TrendFollower, Contrarian
+from .agent import TrendFollower, Contrarian, RLAgent
 from .market import Market
 import pandas as pd
 import os
@@ -9,16 +9,21 @@ class AxiomModel(Model):
     """
     The AXIOM Simulation Model.
     """
-    def __init__(self, num_trend_followers=10, num_contrarians=10):
+    def __init__(self, num_trend_followers=10, num_contrarians=10, num_rl_agents=0):
         super().__init__()
-        self.num_agents = num_trend_followers + num_contrarians
+        self.num_agents = num_trend_followers + num_contrarians + num_rl_agents
         self.schedule = RandomActivation(self)
         self.market = Market()
         self.price_history = [100.0]
         self.trade_logs = []
         self.agent_logs = []
+        self.coalitions = {}  # coalition_id -> list of member agent_ids
 
         # Create agents
+        for i in range(num_rl_agents):
+            a = RLAgent(f"RL_{i}", self, risk_type="RiskNeutral")
+            self.schedule.add(a)
+
         for i in range(num_trend_followers):
             a = TrendFollower(f"TF_{i}", self)
             self.schedule.add(a)
@@ -67,7 +72,9 @@ class AxiomModel(Model):
                 "agent_id": agent.unique_id,
                 "type": agent.type,
                 "wealth": agent.wealth,
-                "inventory": agent.inventory
+                "inventory": agent.inventory,
+                "coalition_id": agent.coalition_id,
+                "last_signal": agent.last_signal
             })
 
     def get_agent_index(self, agent_id):

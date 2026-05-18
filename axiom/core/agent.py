@@ -14,6 +14,10 @@ class AxiomAgent(Agent):
         self.type = "Base"
         self.risk_type = risk_type
         
+        # Phase 3: Coalition and Signaling
+        self.coalition_id = None
+        self.last_signal = 0
+        
         # CRRA Gamma parameter for risk awareness
         if self.risk_type == "RiskAverse":
             self.gamma = 2.0
@@ -38,7 +42,7 @@ class AxiomAgent(Agent):
         Returns the agent's observation of the current state.
         To be implemented by subclasses or the environment wrapper.
         """
-        # Week 3 will refine this into: [own_wealth, market_price, moving_avg, neighbor_wealth_delta]
+        # Phase 3: Full observation vector is constructed in the MultiAgentEnv wrapper (gym_wrapper.py)
         return {
             "wealth": self.wealth,
             "inventory": self.inventory,
@@ -114,3 +118,18 @@ class Contrarian(AxiomAgent):
             # Price is high, sell
             if self.inventory > 0:
                 self.model.market.submit_order('sell', current_price * 0.99, 1, self.unique_id)
+
+class RLAgent(AxiomAgent):
+    """
+    An agent controlled by Reinforcement Learning.
+    Does not have an internal rule-based act() method.
+    Action is provided externally via the Gym environment.
+    """
+    def __init__(self, unique_id, model, risk_type="RiskNeutral"):
+        super().__init__(unique_id, model, risk_type)
+        self.type = "RLAgent"
+
+    def act(self):
+        # Action is handled by the RL wrapper
+        pass
+
